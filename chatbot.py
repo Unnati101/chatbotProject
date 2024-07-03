@@ -5,14 +5,18 @@ import numpy as np
 import nltk
 import tensorflow as tf
 from tensorflow import keras
-
+import gradio as gr
 
 
 from nltk.stem import WordNetLemmatizer
 from keras.models import load_model
 
+nltk.download('punkt')
+nltk.download('wordnet')
+
+
 lemmatizer = WordNetLemmatizer()
-intents = json.loads(open('C:/Users/rasto/Desktop/create_chatbot_using_python/intents.json').read())
+intents = json.loads(open('intents.json').read())
 
 words = pickle.load(open('words.pkl', 'rb'))
 classes = pickle.load(open('classes.pkl', 'rb'))
@@ -56,9 +60,22 @@ def get_response(intents_list, intents_json):
 
 print("GO! Bot is running!")
 
-while True:
-    message = input("")
+
+def main():
+    message = input()
     ints = predict_class (message)
     res = get_response (ints, intents)
-    print (res)
+    print(res)
+    return res
     
+
+if __name__=="__main__": 
+    main()
+
+
+
+def bot(text):
+    message = text
+    ints = predict_class (message)
+    res = get_response (ints, intents)
+    return res
